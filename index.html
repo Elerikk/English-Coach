@@ -2,10 +2,19 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>SlangMate AI - Pro English Coach</title>
+
+  <!-- PWA Meta Tags & Manifest Embebido -->
+  <meta name="theme-color" content="#090d16" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="SlangMate" />
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22SlangMate%20AI%20Pro%22%2C%22short_name%22%3A%22SlangMate%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23090d16%22%2C%22theme_color%22%3A%22%23090d16%22%2C%22description%22%3A%22Tutor%20interactivo%20de%20ingl%C3%A9s%20nativo%20y%20jergas%20con%20IA%22%7D">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --bg: #090d16;
@@ -18,6 +27,7 @@
       --border: rgba(148, 163, 184, 0.14);
       --success: #10b981;
       --danger: #ef4444;
+      --purple: #a855f7;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -28,28 +38,31 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 16px;
+      padding: 14px;
     }
 
     /* Header */
     header {
       width: 100%;
-      max-width: 1100px;
+      max-width: 1140px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       padding: 0 4px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .brand { display: flex; align-items: center; gap: 10px; }
     .brand h1 { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; }
     .brand span { color: var(--accent); }
 
-    .header-stats {
+    .header-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     .badge-stat {
@@ -65,32 +78,39 @@
       gap: 6px;
     }
 
-    .btn-icon {
+    .btn-header {
       background: var(--card-bg);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 7px 14px;
+      padding: 6px 12px;
       border-radius: 999px;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
+      font-weight: 600;
       transition: all 0.2s ease;
     }
-    .btn-icon:hover { border-color: var(--accent); background: #1e293b; }
+    .btn-header:hover { border-color: var(--accent); background: #1e293b; }
+    .btn-pwa {
+      background: linear-gradient(135deg, rgba(56,189,248,0.2) 0%, rgba(168,85,247,0.2) 100%);
+      border-color: var(--accent);
+      color: var(--accent);
+      display: none;
+    }
 
     /* Layout Principal: 3 Columnas */
     .app-container {
       width: 100%;
-      max-width: 1100px;
+      max-width: 1140px;
       display: grid;
-      grid-template-columns: 340px 1fr 300px;
-      gap: 16px;
+      grid-template-columns: 320px 1fr 310px;
+      gap: 14px;
       flex: 1;
     }
 
-    @media (max-width: 980px) {
+    @media (max-width: 1024px) {
       .app-container { grid-template-columns: 1fr; }
     }
 
@@ -105,7 +125,7 @@
       position: relative;
     }
 
-    /* Panel Izquierdo: Avatar & Misiones */
+    /* Panel Izquierdo */
     .roleplay-selector { margin-bottom: 12px; }
     .roleplay-selector label {
       font-size: 0.72rem;
@@ -123,7 +143,7 @@
       color: white;
       padding: 9px 12px;
       border-radius: 10px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       outline: none;
       font-weight: 600;
     }
@@ -155,7 +175,7 @@
     .avatar-wrapper {
       position: relative;
       width: 100%;
-      height: 240px;
+      height: 220px;
       background: radial-gradient(circle at 50% 50%, #1e293b 0%, #090d16 100%);
       border-radius: 14px;
       display: flex;
@@ -163,9 +183,9 @@
       justify-content: center;
       overflow: hidden;
       border: 1px solid var(--border);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
-    .avatar-svg { width: 180px; height: 180px; }
+    .avatar-svg { width: 170px; height: 170px; }
     .eye { transition: transform 0.1s ease; transform-origin: center; }
     .mouth { transition: all 0.08s ease; transform-origin: 100px 145px; }
 
@@ -180,11 +200,11 @@
 
     .listening-wave {
       position: absolute;
-      bottom: 10px;
+      bottom: 8px;
       display: flex;
       gap: 4px;
       align-items: center;
-      height: 20px;
+      height: 18px;
       opacity: 0;
       transition: opacity 0.3s;
     }
@@ -207,7 +227,7 @@
       background: var(--accent);
       color: #090d16;
       border: none;
-      padding: 13px;
+      padding: 12px;
       border-radius: 12px;
       font-weight: 700;
       font-size: 0.95rem;
@@ -237,10 +257,10 @@
       background: rgba(16, 185, 129, 0.12);
       border: 1px solid rgba(16, 185, 129, 0.35);
       color: var(--success);
-      padding: 10px;
+      padding: 9px;
       border-radius: 10px;
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -250,12 +270,12 @@
     }
     .btn-finish:hover { background: rgba(16, 185, 129, 0.2); }
 
-    /* Panel Central: Chat & Diálogo */
+    /* Panel Central: Chat & Smart Hints */
     .chat-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       padding-bottom: 8px;
       border-bottom: 1px solid var(--border);
     }
@@ -271,7 +291,7 @@
 
     .chat-container {
       flex: 1;
-      height: 420px;
+      height: 380px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
@@ -284,9 +304,10 @@
     .msg {
       padding: 12px 14px;
       border-radius: 14px;
-      max-width: 88%;
+      max-width: 90%;
       font-size: 0.88rem;
       line-height: 1.45;
+      position: relative;
     }
     .msg.user {
       align-self: flex-end;
@@ -305,7 +326,25 @@
       color: var(--accent);
       margin-bottom: 4px;
       font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
+    .btn-shadow-action {
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      color: #c084fc;
+      border-radius: 6px;
+      padding: 2px 7px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 6px;
+      transition: all 0.2s;
+    }
+    .btn-shadow-action:hover { background: rgba(168, 85, 247, 0.3); }
 
     .slang-chip {
       background: rgba(56, 189, 248, 0.15);
@@ -317,27 +356,69 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .slang-chip:hover {
-      background: var(--accent);
-      color: #090d16;
+    .slang-chip:hover { background: var(--accent); color: #090d16; }
+
+    /* Barra de Sugerencias (Smart Hints) */
+    .smart-hints-bar {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
+    .hints-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .btn-hint-gen {
+      background: none;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+    .hints-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    @media (max-width: 600px) {
+      .hints-cards { grid-template-columns: 1fr; }
+    }
+    .hint-card {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 9px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      line-height: 1.3;
+    }
+    .hint-card:hover { border-color: var(--accent); background: #1e293b; }
+    .hint-tag { font-size: 0.65rem; font-weight: 700; color: var(--accent); display: block; margin-bottom: 2px; }
 
     /* Panel Derecho: Vocabulario en Vivo */
     .side-header {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 700;
       margin-bottom: 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-
     .slang-list {
       flex: 1;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 8px;
+      height: 380px;
     }
     .slang-card {
       background: #0f172a;
@@ -363,7 +444,7 @@
     .modal {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0, 0, 0, 0.78);
+      background: rgba(0, 0, 0, 0.82);
       backdrop-filter: blur(5px);
       display: none;
       align-items: center;
@@ -378,7 +459,7 @@
       border-radius: 20px;
       padding: 24px;
       width: 100%;
-      max-width: 500px;
+      max-width: 520px;
       max-height: 90vh;
       overflow-y: auto;
     }
@@ -387,7 +468,44 @@
     .btn-secondary { background: #334155; border: none; color: white; padding: 8px 16px; border-radius: 10px; cursor: pointer; }
     .btn-primary { background: var(--accent); border: none; color: #090d16; font-weight: 700; padding: 8px 16px; border-radius: 10px; cursor: pointer; }
 
-    /* Reporte Feedback */
+    /* Shadowing UI */
+    .shadow-box {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      margin: 12px 0;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    .word-correct { color: #10b981; font-weight: 700; }
+    .word-missed { color: #ef4444; text-decoration: underline; }
+    .score-circle {
+      width: 70px; height: 70px;
+      border-radius: 50%;
+      border: 3px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; font-weight: 800;
+      color: var(--accent);
+      margin: 12px auto;
+    }
+
+    /* Flashcards Quiz */
+    .quiz-option {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.88rem;
+    }
+    .quiz-option:hover { border-color: var(--accent); }
+    .quiz-option.correct { background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #10b981; }
+    .quiz-option.wrong { background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #ef4444; }
+
+    /* Feedback Report */
     .report-badge {
       display: inline-block;
       padding: 4px 10px;
@@ -410,15 +528,8 @@
       color: var(--accent);
       margin-bottom: 6px;
     }
-    .feedback-diff {
-      color: #ef4444;
-      text-decoration: line-through;
-      margin-bottom: 4px;
-    }
-    .feedback-better {
-      color: #10b981;
-      font-weight: 600;
-    }
+    .feedback-diff { color: #ef4444; text-decoration: line-through; margin-bottom: 4px; }
+    .feedback-better { color: #10b981; font-weight: 600; }
   </style>
 </head>
 <body>
@@ -429,12 +540,21 @@
       <h1>SlangMate <span>PRO</span></h1>
     </div>
 
-    <div class="header-stats">
+    <div class="header-actions">
       <div class="badge-stat">
-        🔥 <span id="streakDays">1</span> Día(s) de racha
+        🔥 <span id="streakDays">1</span> Día(s)
       </div>
-      <button class="btn-icon" onclick="openConfigModal()">
-        ⚙️ Configurar IA
+      <button class="btn-header" onclick="openNotebookModal()">
+        📚 Mi Cuaderno (<span id="notebookCount">0</span>)
+      </button>
+      <button class="btn-header" onclick="startMiniQuiz()">
+        ⚡ Mini Quiz
+      </button>
+      <button class="btn-header btn-pwa" id="pwaInstallBtn" onclick="installPWA()">
+        📲 Instalar App
+      </button>
+      <button class="btn-header" onclick="openConfigModal()">
+        ⚙️ Config
       </button>
     </div>
   </header>
@@ -501,11 +621,11 @@
       </button>
 
       <button class="btn-finish" onclick="generateSessionFeedback()">
-        🏁 Terminar & Evaluar Mi Desempeño
+        🏁 Terminar & Evaluar Sesión
       </button>
     </div>
 
-    <!-- Panel Central: Conversación -->
+    <!-- Panel Central: Conversación & Smart Hints -->
     <div class="card">
       <div class="chat-header">
         <h2>Diálogo en Vivo</h2>
@@ -514,8 +634,35 @@
 
       <div class="chat-container" id="chatList">
         <div class="msg ai">
-          <div class="msg-sender" id="initialSender">Liam (Londres)</div>
-          Oi mate! Ready to practice some proper English? Hit the mic or pick a mission on the left, and let's get cracking!
+          <div class="msg-sender">
+            <span>Liam (🇬🇧)</span>
+          </div>
+          <div>Oi mate! Ready to practice some proper English? Hit the mic below and let's get cracking!</div>
+          <button class="btn-shadow-action" onclick="openShadowing('Oi mate! Ready to practice some proper English?')">
+            🎯 Practicar Pronunciación
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra de Sugerencias Inteligentes (Smart Hints) -->
+      <div class="smart-hints-bar">
+        <div class="hints-header">
+          <span>💡 ¿No sabes qué responder?</span>
+          <button class="btn-hint-gen" onclick="requestSmartHints()">+ Ver Sugerencias IA</button>
+        </div>
+        <div class="hints-cards" id="hintsContainer">
+          <div class="hint-card" onclick="useHint(this.innerText)">
+            <span class="hint-tag">Casual</span>
+            "Sounds like a plan mate! Let's do it."
+          </div>
+          <div class="hint-card" onclick="useHint(this.innerText)">
+            <span class="hint-tag">Intermedio</span>
+            "I'm ready! What topic should we discuss today?"
+          </div>
+          <div class="hint-card" onclick="useHint(this.innerText)">
+            <span class="hint-tag">Pregunta</span>
+            "Could you explain what 'get cracking' means?"
+          </div>
         </div>
       </div>
     </div>
@@ -534,12 +681,13 @@
     </div>
   </div>
 
-  <!-- Modal Detalle Slang -->
+  <!-- Modal Detalle Slang + Guardar en Cuaderno -->
   <div class="modal" id="slangModal">
     <div class="modal-content">
       <h2 id="modalSlangWord" style="color:var(--accent);">Word</h2>
-      <div style="margin-bottom:12px;">
+      <div style="margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
         <span id="modalSlangRegion" style="background:#1e293b; padding:4px 8px; border-radius:6px; font-size:0.75rem; font-weight:700;">Region</span>
+        <button class="btn-header" id="btnSaveToNotebook" onclick="toggleSaveCurrentSlang()">⭐ Guardar en mi Cuaderno</button>
       </div>
       <p id="modalSlangDef" style="font-size:0.9rem; line-height:1.45; margin-bottom:12px; color:#cbd5e1;"></p>
       <div style="background:#0f172a; border:1px solid var(--border); padding:10px; border-radius:10px; margin-bottom:16px;">
@@ -547,8 +695,66 @@
         <em id="modalSlangExample" style="font-size:0.85rem; color:#f8fafc;"></em>
       </div>
       <div class="modal-footer">
-        <button class="btn-secondary" onclick="pronounceCurrentSlang()">🔊 Escuchar Pronunciación</button>
+        <button class="btn-secondary" onclick="pronounceCurrentSlang()">🔊 Escuchar</button>
         <button class="btn-primary" onclick="closeSlangModal()">Entendido</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Shadowing & Corrector Fonético -->
+  <div class="modal" id="shadowModal">
+    <div class="modal-content">
+      <h2>🎯 Modo Shadowing (Pronunciación)</h2>
+      <p style="font-size:0.82rem; color:var(--text-muted);">
+        Escucha la frase nativa y luego presiona el micrófono para repetirla. La IA evaluará tu pronunciación palabra por palabra.
+      </p>
+
+      <div class="shadow-box" id="targetShadowText">Target text goes here...</div>
+
+      <div style="text-align:center; margin: 12px 0;">
+        <button class="btn-secondary" onclick="listenTargetShadow()" style="margin-right:8px;">🔊 Escuchar Nativo</button>
+        <button class="btn-primary" id="btnRecordShadow" onclick="recordShadowAttempt()">🎙️ Repetir Frase</button>
+      </div>
+
+      <div id="shadowResultBox" style="display:none; text-align:center;">
+        <div class="score-circle" id="shadowScoreCircle">--%</div>
+        <p id="shadowComparison" style="font-size:0.95rem; margin-bottom:8px;"></p>
+        <p id="shadowFeedbackTip" style="font-size:0.8rem; color:var(--text-muted);"></p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeShadowModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Cuaderno de Estudio Persistente -->
+  <div class="modal" id="notebookModal">
+    <div class="modal-content">
+      <h2>📚 Mi Cuaderno de Slang</h2>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:14px;">
+        Palabras y modismos que has guardado durante tus sesiones de práctica.
+      </p>
+      <div id="notebookItemsList" style="display:flex; flex-direction:column; gap:8px; max-height:300px; overflow-y:auto;">
+        <!-- Se llena dinámicamente -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeNotebookModal()">Cerrar</button>
+        <button class="btn-primary" onclick="startMiniQuiz()">⚡ Practicar con Mini Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Mini Quiz de 1 Minuto -->
+  <div class="modal" id="quizModal">
+    <div class="modal-content">
+      <h2>⚡ Mini Quiz de Slang</h2>
+      <p id="quizQuestion" style="font-size:0.95rem; font-weight:600; margin:12px 0; color:#38bdf8;">¿Qué significa la palabra?</p>
+      <div id="quizOptionsContainer"></div>
+      <div id="quizFeedback" style="font-size:0.85rem; margin-top:10px; font-weight:700;"></div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeQuizModal()">Salir</button>
+        <button class="btn-primary" id="btnNextQuizQuestion" onclick="nextQuizQuestion()" style="display:none;">Siguiente Pregunta ➡️</button>
       </div>
     </div>
   </div>
@@ -572,7 +778,7 @@
     <div class="modal-content">
       <h2>Configurar Cerebro IA</h2>
       <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:14px;">
-        Clave gratuita de <strong>Groq Cloud</strong> (Llama 3.3) o <strong>Google Gemini Flash</strong>. Se guarda solo en tu navegador.
+        Clave gratuita de <strong>Groq Cloud</strong> (Llama 3.3) o <strong>Google Gemini Flash</strong>.
       </p>
       <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:4px;">Proveedor:</label>
       <select id="apiProvider" class="select-custom" style="margin-bottom:12px;">
@@ -589,7 +795,7 @@
   </div>
 
   <script>
-    // --- DICCIONARIO INTERNO DE SLANGS & EXPRESIONES ---
+    // --- BASE DE DATOS DE SLANGS & EXPRESIONES ---
     const SLANG_DB = {
       // UK
       "chuffed": { region: "🇬🇧 Reino Unido", meaning: "Muy feliz, encantado u orgulloso de algo.", example: "I was chuffed to bits when I got the job." },
@@ -621,7 +827,7 @@
       "low-hanging fruit": { region: "🇺🇸 US Corporate", meaning: "Oportunidades fáciles de lograr con poco esfuerzo.", example: "Fixing typos on the site is low-hanging fruit." }
     };
 
-    // --- PERSONAJES & MISIONES ---
+    // --- PERSONAS & MISIONES ---
     const PERSONAS = {
       liam: {
         name: "Liam",
@@ -679,39 +885,14 @@
     let recognition = null;
     let synth = window.speechSynthesis;
     let currentSelectedSlang = null;
+    let targetShadowPhrase = "";
+    let deferredPrompt = null;
 
-    // --- MANEJO DE MISIONES Y PERSONAJES ---
-    function changeMission() {
-      currentMission = document.getElementById('missionSelect').value;
-      const m = MISSIONS[currentMission];
-      document.getElementById('missionBadge').innerText = m.title;
-      conversationHistory = [];
-      const intro = `New Scenario Activated: ${m.title}. Hit the mic to start!`;
-      addMessage('ai', intro);
-      speakWithLipSync(intro);
-    }
-
-    function switchPersona(key, el) {
-      currentPersona = key;
-      const p = PERSONAS[key];
-
-      document.querySelectorAll('.persona-tab').forEach(t => t.classList.remove('active'));
-      el.classList.add('active');
-
-      document.getElementById('clothesEl').setAttribute('fill', p.color);
-      document.getElementById('hairStop1').setAttribute('stop-color', p.hair1);
-      document.getElementById('hairStop2').setAttribute('stop-color', p.hair2);
-
-      conversationHistory = [];
-      addMessage('ai', p.defaultGreeting);
-      speakWithLipSync(p.defaultGreeting);
-    }
-
-    // --- RECONOCIMIENTO DE VOZ ---
+    // --- RECONOCIMIENTO DE VOZ NATIVO ---
     function initSpeech() {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) {
-        alert("Tu navegador no soporta reconocimiento de voz nativo. Usa Chrome o Edge.");
+        alert("Tu navegador no soporta reconocimiento de voz nativo. Te recomendamos usar Google Chrome o Microsoft Edge.");
         return;
       }
 
@@ -760,9 +941,7 @@
       if (!synth) return;
       synth.cancel();
 
-      // Limpiar asteriscos o formato markdown para que el sintetizador no los lea
       const cleanText = text.replace(/[*_#]/g, '');
-
       const utterance = new SpeechSynthesisUtterance(cleanText);
       utterance.lang = PERSONAS[currentPersona].voiceLang;
 
@@ -778,6 +957,33 @@
       utterance.onerror = () => avatarBox.classList.remove('talking');
 
       synth.speak(utterance);
+    }
+
+    // --- MANEJO DE MISIONES Y PERSONAJES ---
+    function changeMission() {
+      currentMission = document.getElementById('missionSelect').value;
+      const m = MISSIONS[currentMission];
+      document.getElementById('missionBadge').innerText = m.title;
+      conversationHistory = [];
+      const intro = `New Scenario: ${m.title}. Hit the mic to start!`;
+      addMessage('ai', intro);
+      speakWithLipSync(intro);
+    }
+
+    function switchPersona(key, el) {
+      currentPersona = key;
+      const p = PERSONAS[key];
+
+      document.querySelectorAll('.persona-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+
+      document.getElementById('clothesEl').setAttribute('fill', p.color);
+      document.getElementById('hairStop1').setAttribute('stop-color', p.hair1);
+      document.getElementById('hairStop2').setAttribute('stop-color', p.hair2);
+
+      conversationHistory = [];
+      addMessage('ai', p.defaultGreeting);
+      speakWithLipSync(p.defaultGreeting);
     }
 
     // --- DETECCIÓN DE SLANGS & HIGHLIGHTING ---
@@ -828,6 +1034,12 @@
       document.getElementById('modalSlangRegion').innerText = data.region;
       document.getElementById('modalSlangDef').innerText = data.meaning;
       document.getElementById('modalSlangExample').innerText = `"${data.example}"`;
+
+      // Actualizar botón de guardar
+      const saved = getSavedNotebook();
+      const btn = document.getElementById('btnSaveToNotebook');
+      btn.innerText = saved.includes(word) ? "✅ Guardado en Cuaderno" : "⭐ Guardar en mi Cuaderno";
+
       document.getElementById('slangModal').classList.add('show');
     }
     function closeSlangModal() {
@@ -835,6 +1047,268 @@
     }
     function pronounceCurrentSlang() {
       if (currentSelectedSlang) speakWithLipSync(currentSelectedSlang);
+    }
+
+    // --- CUADERNO DE ESTUDIO PERSISTENTE (NOTEBOOK) ---
+    function getSavedNotebook() {
+      return JSON.parse(localStorage.getItem('slangmate_notebook') || '[]');
+    }
+
+    function toggleSaveCurrentSlang() {
+      if (!currentSelectedSlang) return;
+      let saved = getSavedNotebook();
+      const btn = document.getElementById('btnSaveToNotebook');
+
+      if (saved.includes(currentSelectedSlang)) {
+        saved = saved.filter(w => w !== currentSelectedSlang);
+        btn.innerText = "⭐ Guardar en mi Cuaderno";
+      } else {
+        saved.push(currentSelectedSlang);
+        btn.innerText = "✅ Guardado en Cuaderno";
+      }
+      localStorage.setItem('slangmate_notebook', JSON.stringify(saved));
+      updateNotebookBadge();
+    }
+
+    function updateNotebookBadge() {
+      const count = getSavedNotebook().length;
+      document.getElementById('notebookCount').innerText = count;
+    }
+
+    function openNotebookModal() {
+      const saved = getSavedNotebook();
+      const list = document.getElementById('notebookItemsList');
+      list.innerHTML = '';
+
+      if (saved.length === 0) {
+        list.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.85rem;">
+          Aún no tienes palabras guardadas.<br>Haz clic en cualquier slang durante tu conversación y presiona '⭐ Guardar'.
+        </div>`;
+      } else {
+        saved.forEach(word => {
+          const item = SLANG_DB[word] || { region: "Vocabulario", meaning: "Expresión aprendida." };
+          const div = document.createElement('div');
+          div.className = 'slang-card';
+          div.innerHTML = `
+            <div class="slang-card-title">
+              <span>${word}</span>
+              <button onclick="removeNotebookWord('${word}', event)" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:0.75rem;">🗑️ Quitar</button>
+            </div>
+            <div class="slang-card-meaning">${item.meaning}</div>
+          `;
+          div.onclick = () => openSlangModal(word);
+          list.appendChild(div);
+        });
+      }
+      document.getElementById('notebookModal').classList.add('show');
+    }
+    function closeNotebookModal() {
+      document.getElementById('notebookModal').classList.remove('show');
+    }
+
+    function removeNotebookWord(word, e) {
+      e.stopPropagation();
+      let saved = getSavedNotebook().filter(w => w !== word);
+      localStorage.setItem('slangmate_notebook', JSON.stringify(saved));
+      updateNotebookBadge();
+      openNotebookModal();
+    }
+
+    // --- SMART HINTS (SUGERENCIAS DE RESPUESTA) ---
+    async function requestSmartHints() {
+      const apiKey = localStorage.getItem('slangmate_api_key');
+      const container = document.getElementById('hintsContainer');
+      container.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--accent); font-size:0.75rem;">Generando 3 sugerencias con IA...</div>`;
+
+      const lastAiMsg = [...conversationHistory].reverse().find(m => m.role === 'assistant')?.content || "Let's practice!";
+
+      const prompt = `The tutor just said: "${lastAiMsg}".
+Generate 3 short spoken replies in English for the learner. Return ONLY valid JSON:
+{
+  "casual": "Short casual reply using slang or idioms",
+  "balanced": "Natural daily response (1 sentence)",
+  "professional": "Polite or professional response"
+}`;
+
+      try {
+        let raw = "";
+        if ((localStorage.getItem('slangmate_provider') || 'groq') === 'groq') {
+          const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: { "Authorization": `Bearer ${apiKey}`, "Content-Type": "application/json" },
+            body: JSON.stringify({
+              model: "llama-3.3-70b-versatile",
+              messages: [{ role: "user", content: prompt }],
+              temperature: 0.5,
+              response_format: { type: "json_object" }
+            })
+          });
+          const d = await res.json();
+          raw = d.choices[0].message.content;
+        }
+
+        const data = JSON.parse(raw);
+        container.innerHTML = `
+          <div class="hint-card" onclick="useHint('${data.casual.replace(/'/g, "\\'")}')">
+            <span class="hint-tag">Casual</span>
+            "${data.casual}"
+          </div>
+          <div class="hint-card" onclick="useHint('${data.balanced.replace(/'/g, "\\'")}')">
+            <span class="hint-tag">Equilibrada</span>
+            "${data.balanced}"
+          </div>
+          <div class="hint-card" onclick="useHint('${data.professional.replace(/'/g, "\\'")}')">
+            <span class="hint-tag">Profesional</span>
+            "${data.professional}"
+          </div>
+        `;
+      } catch (e) {
+        container.innerHTML = `
+          <div class="hint-card" onclick="useHint('That sounds good mate!')">"That sounds good mate!"</div>
+          <div class="hint-card" onclick="useHint('I see what you mean.')">"I see what you mean."</div>
+          <div class="hint-card" onclick="useHint('Could you elaborate on that?')">"Could you elaborate on that?"</div>
+        `;
+      }
+    }
+
+    function useHint(text) {
+      const clean = text.replace(/^"|"$/g, '').trim();
+      addMessage('user', clean);
+      queryLLM(clean);
+    }
+
+    // --- MODO SHADOWING & CORRECTOR FONÉTICO ---
+    function openShadowing(phrase) {
+      targetShadowPhrase = phrase.replace(/[*_#]/g, '').trim();
+      document.getElementById('targetShadowText').innerText = `"${targetShadowPhrase}"`;
+      document.getElementById('shadowResultBox').style.display = 'none';
+      document.getElementById('shadowModal').classList.add('show');
+    }
+    function closeShadowModal() {
+      document.getElementById('shadowModal').classList.remove('show');
+    }
+    function listenTargetShadow() {
+      speakWithLipSync(targetShadowPhrase);
+    }
+
+    function recordShadowAttempt() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) return;
+
+      const sr = new SpeechRecognition();
+      sr.lang = PERSONAS[currentPersona].voiceLang;
+      const btn = document.getElementById('btnRecordShadow');
+      btn.innerText = "🎙️ Habla ahora...";
+      btn.style.background = "#ef4444";
+
+      sr.onresult = (e) => {
+        const spoken = e.results[0][0].transcript;
+        evaluatePronunciation(targetShadowPhrase, spoken);
+      };
+
+      sr.onerror = () => {
+        btn.innerText = "🎙️ Repetir Frase";
+        btn.style.background = "";
+      };
+
+      sr.onend = () => {
+        btn.innerText = "🎙️ Repetir Frase";
+        btn.style.background = "";
+      };
+
+      sr.start();
+    }
+
+    function evaluatePronunciation(target, spoken) {
+      const clean = (s) => s.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim().split(/\s+/);
+      const targetWords = clean(target);
+      const spokenWords = clean(spoken);
+
+      let matches = 0;
+      const htmlWords = targetWords.map(tw => {
+        if (spokenWords.includes(tw)) {
+          matches++;
+          return `<span class="word-correct">${tw}</span>`;
+        } else {
+          return `<span class="word-missed">${tw}</span>`;
+        }
+      });
+
+      const accuracy = Math.round((matches / targetWords.length) * 100);
+      const scoreCircle = document.getElementById('shadowScoreCircle');
+      scoreCircle.innerText = `${accuracy}%`;
+      scoreCircle.style.borderColor = accuracy >= 80 ? '#10b981' : (accuracy >= 50 ? '#fbbf24' : '#ef4444');
+      scoreCircle.style.color = scoreCircle.style.borderColor;
+
+      document.getElementById('shadowComparison').innerHTML = htmlWords.join(" ");
+      document.getElementById('shadowFeedbackTip').innerText = accuracy >= 80 
+        ? "¡Excelente pronunciación y ritmo nativo!" 
+        : "Practica las palabras en rojo y presta atención a las consonantes finales.";
+
+      document.getElementById('shadowResultBox').style.display = 'block';
+    }
+
+    // --- MINI QUIZ DE 1 MINUTO ---
+    let currentQuizIndex = 0;
+    let quizList = [];
+
+    function startMiniQuiz() {
+      closeNotebookModal();
+      const pool = Object.keys(SLANG_DB);
+      quizList = pool.sort(() => 0.5 - Math.random()).slice(0, 3);
+      currentQuizIndex = 0;
+      document.getElementById('quizModal').classList.add('show');
+      showQuizQuestion();
+    }
+
+    function showQuizQuestion() {
+      const word = quizList[currentQuizIndex];
+      const correct = SLANG_DB[word];
+      document.getElementById('quizQuestion').innerText = `¿Qué significa la expresión "${word.toUpperCase()}"? (${correct.region})`;
+
+      const otherWords = Object.keys(SLANG_DB).filter(w => w !== word);
+      const distractors = otherWords.sort(() => 0.5 - Math.random()).slice(0, 2).map(w => SLANG_DB[w].meaning);
+
+      const options = [correct.meaning, ...distractors].sort(() => 0.5 - Math.random());
+      const container = document.getElementById('quizOptionsContainer');
+      container.innerHTML = '';
+      document.getElementById('quizFeedback').innerText = '';
+      document.getElementById('btnNextQuizQuestion').style.display = 'none';
+
+      options.forEach(opt => {
+        const btn = document.createElement('div');
+        btn.className = 'quiz-option';
+        btn.innerText = opt;
+        btn.onclick = () => selectQuizAnswer(btn, opt === correct.meaning, correct.example);
+        container.appendChild(btn);
+      });
+    }
+
+    function selectQuizAnswer(el, isCorrect, example) {
+      document.querySelectorAll('.quiz-option').forEach(o => o.onclick = null);
+      if (isCorrect) {
+        el.classList.add('correct');
+        document.getElementById('quizFeedback').innerHTML = `<span style="color:#10b981;">¡Correcto! 🎉</span> Ejemplo: "<em>${example}</em>"`;
+      } else {
+        el.classList.add('wrong');
+        document.getElementById('quizFeedback').innerHTML = `<span style="color:#ef4444;">¡Casi!</span> Ejemplo real: "<em>${example}</em>"`;
+      }
+      document.getElementById('btnNextQuizQuestion').style.display = 'inline-block';
+    }
+
+    function nextQuizQuestion() {
+      currentQuizIndex++;
+      if (currentQuizIndex < quizList.length) {
+        showQuizQuestion();
+      } else {
+        document.getElementById('quizQuestion').innerText = "¡Quiz completado! 🚀";
+        document.getElementById('quizOptionsContainer').innerHTML = "<p style='color:#10b981; font-weight:700; text-align:center;'>Has reforzado tu vocabulario para la próxima conversación.</p>";
+        document.getElementById('quizFeedback').innerText = '';
+        document.getElementById('btnNextQuizQuestion').style.display = 'none';
+      }
+    }
+    function closeQuizModal() {
+      document.getElementById('quizModal').classList.remove('show');
     }
 
     // --- CEREBRO IA (LLM) ---
@@ -857,9 +1331,9 @@
       const systemPrompt = `You are ${p.name}, a native speaker (${p.flag}).
 ${m.promptAddition}
 RULES:
-1. Always keep responses brief (1-2 short sentences max) so this spoken conversation stays fast and natural.
+1. Keep responses concise (1 to 2 short sentences) so voice turn-taking is fast.
 2. Frequently use natural slang words like: proper, dodgy, chuffed, gutted, sorted, mate, no worries, reckon, arvo, heaps, circle back, touch base, bandwidth, move the needle.
-3. If the user makes an obvious grammatical error, gently rephrase it naturally in your response without breaking character.`;
+3. If the user makes an obvious grammatical error, naturally rephrase it without breaking character.`;
 
       try {
         let aiResponse = "";
@@ -968,7 +1442,6 @@ Generate a structured JSON evaluation with EXACTLY this JSON format (no markdown
           </div>
         `;
 
-        // Incrementar racha diaria
         let streak = parseInt(localStorage.getItem('slangmate_streak') || '1');
         localStorage.setItem('slangmate_streak', streak + 1);
         document.getElementById('streakDays').innerText = streak + 1;
@@ -992,15 +1465,21 @@ Generate a structured JSON evaluation with EXACTLY this JSON format (no markdown
       const sender = document.createElement('div');
       sender.className = 'msg-sender';
       sender.innerText = role === 'user' ? 'Tú' : `${PERSONAS[currentPersona].name} (${PERSONAS[currentPersona].flag})`;
-
       div.appendChild(sender);
 
+      const contentDiv = document.createElement('div');
       if (role === 'ai') {
-        const span = document.createElement('span');
-        span.innerHTML = processSlangsInText(text);
-        div.appendChild(span);
+        contentDiv.innerHTML = processSlangsInText(text);
+        div.appendChild(contentDiv);
+
+        const shadowBtn = document.createElement('button');
+        shadowBtn.className = 'btn-shadow-action';
+        shadowBtn.innerHTML = `🎯 Practicar Pronunciación`;
+        shadowBtn.onclick = () => openShadowing(text);
+        div.appendChild(shadowBtn);
       } else {
-        div.appendChild(document.createTextNode(text));
+        contentDiv.innerText = text;
+        div.appendChild(contentDiv);
       }
 
       chat.appendChild(div);
@@ -1025,8 +1504,29 @@ Generate a structured JSON evaluation with EXACTLY this JSON format (no markdown
       alert("¡Clave guardada con éxito!");
     }
 
-    // Cargar racha inicial guardada
+    // --- PWA INSTALACIÓN ---
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const installBtn = document.getElementById('pwaInstallBtn');
+      if (installBtn) installBtn.style.display = 'flex';
+    });
+
+    function installPWA() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choice) => {
+          if (choice.outcome === 'accepted') {
+            document.getElementById('pwaInstallBtn').style.display = 'none';
+          }
+          deferredPrompt = null;
+        });
+      }
+    }
+
+    // Cargar estado inicial
     document.getElementById('streakDays').innerText = localStorage.getItem('slangmate_streak') || '1';
+    updateNotebookBadge();
   </script>
 </body>
 </html>
