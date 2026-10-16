@@ -3,143 +3,194 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SlangMate AI - Tu Tutor Nativo de Inglés</title>
+  <title>SlangMate AI - Pro English Coach</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0f172a;
-      --card-bg: rgba(30, 41, 59, 0.7);
+      --bg: #090d16;
+      --card-bg: rgba(22, 30, 49, 0.75);
       --accent: #38bdf8;
       --accent-glow: rgba(56, 189, 248, 0.35);
+      --accent-gold: #fbbf24;
       --text: #f8fafc;
       --text-muted: #94a3b8;
-      --border: rgba(148, 163, 184, 0.15);
+      --border: rgba(148, 163, 184, 0.14);
       --success: #10b981;
+      --danger: #ef4444;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
     body {
-      background: radial-gradient(circle at 50% 20%, #1e293b 0%, #0f172a 100%);
+      background: radial-gradient(circle at 50% 10%, #1e293b 0%, #090d16 100%);
       color: var(--text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 24px 16px;
+      padding: 16px;
     }
 
+    /* Header */
     header {
       width: 100%;
-      max-width: 900px;
+      max-width: 1100px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
+      margin-bottom: 16px;
+      padding: 0 4px;
     }
 
-    .brand {
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand h1 { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; }
+    .brand span { color: var(--accent); }
+
+    .header-stats {
       display: flex;
       align-items: center;
       gap: 12px;
     }
-    .brand h1 { font-size: 1.35rem; font-weight: 700; }
-    .brand span { color: var(--accent); }
 
-    .header-actions {
+    .badge-stat {
+      background: rgba(251, 191, 36, 0.12);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      color: var(--accent-gold);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
       display: flex;
-      gap: 10px;
+      align-items: center;
+      gap: 6px;
     }
 
     .btn-icon {
       background: var(--card-bg);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 8px 14px;
+      padding: 7px 14px;
       border-radius: 999px;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       transition: all 0.2s ease;
     }
     .btn-icon:hover { border-color: var(--accent); background: #1e293b; }
 
-    .main-grid {
+    /* Layout Principal: 3 Columnas */
+    .app-container {
       width: 100%;
-      max-width: 900px;
+      max-width: 1100px;
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 20px;
+      grid-template-columns: 340px 1fr 300px;
+      gap: 16px;
       flex: 1;
     }
 
-    @media (max-width: 768px) {
-      .main-grid { grid-template-columns: 1fr; }
+    @media (max-width: 980px) {
+      .app-container { grid-template-columns: 1fr; }
     }
 
     .card {
       background: var(--card-bg);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 20px;
+      border-radius: 18px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
+      position: relative;
     }
 
-    /* Avatar Area */
+    /* Panel Izquierdo: Avatar & Misiones */
+    .roleplay-selector { margin-bottom: 12px; }
+    .roleplay-selector label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .select-custom {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      color: white;
+      padding: 9px 12px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      outline: none;
+      font-weight: 600;
+    }
+
+    .personas-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .persona-tab {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 4px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+    }
+    .persona-tab strong { display: block; color: var(--text); font-size: 0.82rem; }
+    .persona-tab.active {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--text);
+    }
+
     .avatar-wrapper {
       position: relative;
       width: 100%;
-      height: 320px;
-      background: linear-gradient(180deg, #1e293b 0%, #0b1120 100%);
-      border-radius: 16px;
+      height: 240px;
+      background: radial-gradient(circle at 50% 50%, #1e293b 0%, #090d16 100%);
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
       border: 1px solid var(--border);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
-
-    .avatar-svg {
-      width: 220px;
-      height: 220px;
-      transition: transform 0.2s ease;
-    }
-
-    /* Lip-sync and animation styles */
+    .avatar-svg { width: 180px; height: 180px; }
     .eye { transition: transform 0.1s ease; transform-origin: center; }
-    .mouth {
-      transition: all 0.08s ease;
-      transform-origin: 100px 145px;
-    }
+    .mouth { transition: all 0.08s ease; transform-origin: 100px 145px; }
 
     .talking .mouth {
-      animation: talkCycle 0.22s infinite alternate ease-in-out;
+      animation: talkCycle 0.2s infinite alternate ease-in-out;
     }
-
     @keyframes talkCycle {
       0% { transform: scaleY(0.4) scaleX(1); }
-      50% { transform: scaleY(1.6) scaleX(1.15); }
-      100% { transform: scaleY(0.9) scaleX(0.85); }
+      50% { transform: scaleY(1.7) scaleX(1.2); }
+      100% { transform: scaleY(0.8) scaleX(0.85); }
     }
 
     .listening-wave {
       position: absolute;
-      bottom: 12px;
+      bottom: 10px;
       display: flex;
       gap: 4px;
       align-items: center;
-      height: 24px;
+      height: 20px;
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.3s;
     }
     .listening-wave.active { opacity: 1; }
     .wave-bar {
-      width: 4px;
+      width: 3px;
       background: var(--accent);
       border-radius: 2px;
       animation: wave 0.8s infinite ease-in-out;
@@ -147,79 +198,80 @@
     .wave-bar:nth-child(2) { animation-delay: 0.15s; }
     .wave-bar:nth-child(3) { animation-delay: 0.3s; }
     .wave-bar:nth-child(4) { animation-delay: 0.45s; }
-
     @keyframes wave {
-      0%, 100% { height: 6px; }
-      50% { height: 22px; }
-    }
-
-    /* Personas Tabs */
-    .personas {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-
-    .persona-tab {
-      background: #1e293b;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 8px;
-      text-align: center;
-      cursor: pointer;
-      color: var(--text-muted);
-      font-size: 0.8rem;
-      transition: all 0.2s ease;
-    }
-    .persona-tab strong { display: block; color: var(--text); font-size: 0.9rem; }
-    .persona-tab.active {
-      border-color: var(--accent);
-      background: rgba(56, 189, 248, 0.1);
-      color: var(--text);
-    }
-
-    /* Controls */
-    .controls {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: auto;
+      0%, 100% { height: 4px; }
+      50% { height: 18px; }
     }
 
     .mic-button {
       background: var(--accent);
-      color: #0b1120;
+      color: #090d16;
       border: none;
-      padding: 14px;
-      border-radius: 14px;
+      padding: 13px;
+      border-radius: 12px;
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      box-shadow: 0 0 20px var(--accent-glow);
+      gap: 8px;
+      box-shadow: 0 0 16px var(--accent-glow);
       transition: all 0.2s ease;
+      margin-bottom: 8px;
     }
-    .mic-button:hover { filter: brightness(1.1); transform: scale(1.01); }
+    .mic-button:hover { filter: brightness(1.1); transform: translateY(-1px); }
     .mic-button.recording {
-      background: #ef4444;
-      color: #fff;
-      box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+      background: var(--danger);
+      color: white;
+      box-shadow: 0 0 18px rgba(239, 68, 68, 0.45);
       animation: pulse 1.5s infinite;
     }
-
     @keyframes pulse {
       0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
-      70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+      70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
       100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
     }
 
-    /* Dialogue & History */
+    .btn-finish {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: var(--success);
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .btn-finish:hover { background: rgba(16, 185, 129, 0.2); }
+
+    /* Panel Central: Chat & Diálogo */
+    .chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .chat-header h2 { font-size: 0.95rem; font-weight: 700; }
+    .mission-indicator {
+      font-size: 0.72rem;
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--accent);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
     .chat-container {
-      height: 380px;
+      flex: 1;
+      height: 420px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
@@ -232,8 +284,8 @@
     .msg {
       padding: 12px 14px;
       border-radius: 14px;
-      max-width: 85%;
-      font-size: 0.9rem;
+      max-width: 88%;
+      font-size: 0.88rem;
       line-height: 1.45;
     }
     .msg.user {
@@ -244,91 +296,174 @@
     }
     .msg.ai {
       align-self: flex-start;
-      background: #1e293b;
+      background: #0f172a;
       border: 1px solid var(--border);
       border-bottom-left-radius: 4px;
     }
     .msg-sender {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--accent);
       margin-bottom: 4px;
-      font-weight: 600;
+      font-weight: 700;
     }
 
-    .slang-highlight {
-      color: #38bdf8;
-      font-weight: 600;
-      text-decoration: underline dotted;
+    .slang-chip {
+      background: rgba(56, 189, 248, 0.15);
+      border-bottom: 2px dashed var(--accent);
+      color: #7dd3fc;
+      padding: 1px 4px;
+      border-radius: 4px;
+      font-weight: 700;
       cursor: pointer;
+      transition: all 0.2s;
+    }
+    .slang-chip:hover {
+      background: var(--accent);
+      color: #090d16;
     }
 
-    /* Modal Config */
+    /* Panel Derecho: Vocabulario en Vivo */
+    .side-header {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .slang-list {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .slang-card {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .slang-card:hover { border-color: var(--accent); transform: translateX(2px); }
+    .slang-card-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .slang-card-meaning { color: var(--text-muted); font-size: 0.75rem; line-height: 1.3; }
+
+    /* Modales */
     .modal {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(4px);
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(5px);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 100;
+      z-index: 1000;
       padding: 16px;
     }
     .modal.show { display: flex; }
     .modal-content {
-      background: #1e293b;
+      background: #111827;
       border: 1px solid var(--border);
       border-radius: 20px;
       padding: 24px;
       width: 100%;
-      max-width: 480px;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
     }
-    .modal-content h2 { margin-bottom: 12px; font-size: 1.2rem; }
-    .modal-content p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px; line-height: 1.4; }
-    .modal-content input, .modal-content select {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
+    .modal-content h2 { margin-bottom: 12px; font-size: 1.25rem; }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+    .btn-secondary { background: #334155; border: none; color: white; padding: 8px 16px; border-radius: 10px; cursor: pointer; }
+    .btn-primary { background: var(--accent); border: none; color: #090d16; font-weight: 700; padding: 8px 16px; border-radius: 10px; cursor: pointer; }
+
+    /* Reporte Feedback */
+    .report-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .feedback-section {
       background: #0f172a;
       border: 1px solid var(--border);
-      color: white;
-      margin-bottom: 16px;
-      font-size: 0.9rem;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+      font-size: 0.85rem;
     }
-    .modal-footer { display: flex; justify-content: flex-end; gap: 10px; }
-    .btn-secondary { background: #334155; border: none; color: white; padding: 8px 16px; border-radius: 10px; cursor: pointer; }
-    .btn-primary { background: var(--accent); border: none; color: #0f172a; font-weight: 700; padding: 8px 16px; border-radius: 10px; cursor: pointer; }
+    .feedback-section h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .feedback-diff {
+      color: #ef4444;
+      text-decoration: line-through;
+      margin-bottom: 4px;
+    }
+    .feedback-better {
+      color: #10b981;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
 
   <header>
     <div class="brand">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
-      <h1>SlangMate <span>AI</span></h1>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+      <h1>SlangMate <span>PRO</span></h1>
     </div>
-    <div class="header-actions">
+
+    <div class="header-stats">
+      <div class="badge-stat">
+        🔥 <span id="streakDays">1</span> Día(s) de racha
+      </div>
       <button class="btn-icon" onclick="openConfigModal()">
-        ⚙️ Configurar API (Gratis)
+        ⚙️ Configurar IA
       </button>
     </div>
   </header>
 
-  <div class="main-grid">
-    <!-- Panel Izquierdo: Avatar y Controles -->
+  <div class="app-container">
+    <!-- Panel Izquierdo: Configuración del Tutor & Misión -->
     <div class="card">
-      <div class="personas">
+      <div class="roleplay-selector">
+        <label>🎯 Escenario / Misión Laboral</label>
+        <select class="select-custom" id="missionSelect" onchange="changeMission()">
+          <option value="free">Conversación Libre</option>
+          <option value="pub">🇬🇧 Afterwork / Pub Chat (Casual)</option>
+          <option value="standup">🇦🇺 Daily Standup & Deadlines (Ágil)</option>
+          <option value="negotiation">🇺🇸 Negociación con Clientes (Corporativo)</option>
+        </select>
+      </div>
+
+      <div class="personas-tabs">
         <div class="persona-tab active" onclick="switchPersona('liam', this)">
           <strong>🇬🇧 Liam</strong>
-          <span>London Slang</span>
+          <span>Londres</span>
         </div>
         <div class="persona-tab" onclick="switchPersona('chloe', this)">
           <strong>🇦🇺 Chloe</strong>
-          <span>Aussie Slang</span>
+          <span>Sídney</span>
         </div>
         <div class="persona-tab" onclick="switchPersona('marcus', this)">
           <strong>🇺🇸 Marcus</strong>
-          <span>US Corporate</span>
+          <span>Nueva York</span>
         </div>
       </div>
 
@@ -344,27 +479,14 @@
               <stop offset="100%" stop-color="#1e293b" id="hairStop2"/>
             </linearGradient>
           </defs>
-
-          <!-- Ropa / Cuello -->
           <path d="M60 190 Q100 170 140 190 L160 200 L40 200 Z" fill="#38bdf8" id="clothesEl"/>
-          
-          <!-- Cabeza -->
           <ellipse cx="100" cy="115" rx="46" ry="54" fill="url(#skinGrad)" />
-
-          <!-- Pelo -->
           <path d="M52 110 C50 65 150 65 148 110 C140 70 60 70 52 110 Z" fill="url(#hairGrad)"/>
-
-          <!-- Ojos -->
           <ellipse class="eye" cx="84" cy="110" rx="4" ry="5" fill="#1e293b" />
           <ellipse class="eye" cx="116" cy="110" rx="4" ry="5" fill="#1e293b" />
-
-          <!-- Nariz -->
           <path d="M98 118 Q100 126 104 126" stroke="#d97706" stroke-width="2" fill="none" stroke-linecap="round"/>
-
-          <!-- Boca interactiva (Lip Sync) -->
           <path id="avatarMouth" class="mouth" d="M88 144 Q100 148 112 144" stroke="#b91c1c" stroke-width="3" fill="#991b1b" stroke-linecap="round"/>
         </svg>
-
         <div class="listening-wave" id="waveIndicator">
           <div class="wave-bar"></div>
           <div class="wave-bar"></div>
@@ -373,128 +495,235 @@
         </div>
       </div>
 
-      <div class="controls">
-        <button class="mic-button" id="micBtn" onclick="toggleSpeech()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
-          <span id="micLabel">Mantener o Clic para Hablar</span>
-        </button>
-      </div>
+      <button class="mic-button" id="micBtn" onclick="toggleSpeech()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+        <span id="micLabel">Clic para Hablar</span>
+      </button>
+
+      <button class="btn-finish" onclick="generateSessionFeedback()">
+        🏁 Terminar & Evaluar Mi Desempeño
+      </button>
     </div>
 
-    <!-- Panel Derecho: Conversación y Aprendizaje -->
+    <!-- Panel Central: Conversación -->
     <div class="card">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <h2 style="font-size:1.05rem; font-weight:600;">Conversación en Tiempo Real</h2>
-        <span id="tutorBadge" style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); padding:3px 10px; border-radius:99px; font-weight:600;">
-          Liam (UK)
-        </span>
+      <div class="chat-header">
+        <h2>Diálogo en Vivo</h2>
+        <span class="mission-indicator" id="missionBadge">Modo: Charla Casual</span>
       </div>
 
       <div class="chat-container" id="chatList">
         <div class="msg ai">
-          <div class="msg-sender" id="initialSender">Liam</div>
-          Oi mate! Ready to practice some proper English? Hit the mic button below and say whatever is on your mind!
+          <div class="msg-sender" id="initialSender">Liam (Londres)</div>
+          Oi mate! Ready to practice some proper English? Hit the mic or pick a mission on the left, and let's get cracking!
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel Derecho: Diccionario de Slangs de la Sesión -->
+    <div class="card">
+      <div class="side-header">
+        <span>📖 Slangs de la Sesión</span>
+        <span style="font-size:0.75rem; color:var(--accent);" id="slangCounter">0 detectados</span>
+      </div>
+      <div class="slang-list" id="slangListContainer">
+        <div style="font-size:0.78rem; color:var(--text-muted); text-align:center; padding:24px 8px;">
+          Habla con tu tutor. A medida que use expresiones o modismos locales, aparecerán aquí explicadas al instante.
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Modal Configuración API Gratuita -->
+  <!-- Modal Detalle Slang -->
+  <div class="modal" id="slangModal">
+    <div class="modal-content">
+      <h2 id="modalSlangWord" style="color:var(--accent);">Word</h2>
+      <div style="margin-bottom:12px;">
+        <span id="modalSlangRegion" style="background:#1e293b; padding:4px 8px; border-radius:6px; font-size:0.75rem; font-weight:700;">Region</span>
+      </div>
+      <p id="modalSlangDef" style="font-size:0.9rem; line-height:1.45; margin-bottom:12px; color:#cbd5e1;"></p>
+      <div style="background:#0f172a; border:1px solid var(--border); padding:10px; border-radius:10px; margin-bottom:16px;">
+        <span style="font-size:0.72rem; color:var(--text-muted); display:block; font-weight:700;">EJEMPLO:</span>
+        <em id="modalSlangExample" style="font-size:0.85rem; color:#f8fafc;"></em>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="pronounceCurrentSlang()">🔊 Escuchar Pronunciación</button>
+        <button class="btn-primary" onclick="closeSlangModal()">Entendido</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Reporte de Evaluación -->
+  <div class="modal" id="feedbackModal">
+    <div class="modal-content">
+      <h2>📊 Reporte de tu Sesión</h2>
+      <div id="feedbackLoading" style="text-align:center; padding:20px; color:var(--accent);">
+        Analizando tu fluidez, gramática y vocabulario con la IA... ⏳
+      </div>
+      <div id="feedbackBody" style="display:none;"></div>
+      <div class="modal-footer">
+        <button class="btn-primary" onclick="closeFeedbackModal()">¡Seguir Practicando!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Configuración API -->
   <div class="modal" id="configModal">
     <div class="modal-content">
-      <h2>Configuración de Conexión</h2>
-      <p>
-        Para que la IA funcione 100% gratis para siempre con latencia instantánea, recomendamos una clave de <strong>Groq Cloud</strong> (modelo Llama 3) o <strong>Google Gemini</strong>. Ambas son gratuitas y se obtienen en 1 minuto.
+      <h2>Configurar Cerebro IA</h2>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:14px;">
+        Clave gratuita de <strong>Groq Cloud</strong> (Llama 3.3) o <strong>Google Gemini Flash</strong>. Se guarda solo en tu navegador.
       </p>
-
-      <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-bottom:4px;">Proveedor de IA:</label>
-      <select id="apiProvider" onchange="onProviderChange()">
-        <option value="groq">Groq Cloud (Llama 3.3 - Ultra rápido, Recomendado)</option>
+      <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:4px;">Proveedor:</label>
+      <select id="apiProvider" class="select-custom" style="margin-bottom:12px;">
+        <option value="groq">Groq Cloud (Recomendado - Latencia ultra baja)</option>
         <option value="gemini">Google Gemini Flash (Gratis en AI Studio)</option>
       </select>
-
-      <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-bottom:4px;">Tu API Key Gratuita:</label>
-      <input type="password" id="apiKeyInput" placeholder="gsk_... o AIza..." />
-
-      <p style="font-size:0.75rem; color:#64748b;">
-        * Tu clave se guarda exclusivamente en el almacenamiento local de tu navegador (localStorage). Nadie más tiene acceso a ella.
-      </p>
-
+      <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:4px;">API Key:</label>
+      <input type="password" id="apiKeyInput" class="select-custom" placeholder="gsk_... o AIza..." style="margin-bottom:14px;" />
       <div class="modal-footer">
-        <button class="btn-secondary" onclick="closeConfigModal()">Cerrar</button>
-        <button class="btn-primary" onclick="saveApiKey()">Guardar</button>
+        <button class="btn-secondary" onclick="closeConfigModal()">Cancelar</button>
+        <button class="btn-primary" onclick="saveApiKey()">Guardar Clave</button>
       </div>
     </div>
   </div>
 
   <script>
-    // --- ESTADO & PERSONAJES ---
+    // --- DICCIONARIO INTERNO DE SLANGS & EXPRESIONES ---
+    const SLANG_DB = {
+      // UK
+      "chuffed": { region: "🇬🇧 Reino Unido", meaning: "Muy feliz, encantado u orgulloso de algo.", example: "I was chuffed to bits when I got the job." },
+      "gutted": { region: "🇬🇧 Reino Unido", meaning: "Profundamente decepcionado o devastado.", example: "We lost the match; everyone was gutted." },
+      "proper": { region: "🇬🇧 Reino Unido", meaning: "Auténtico, real o bien hecho.", example: "Now that is a proper cup of tea." },
+      "dodgy": { region: "🇬🇧 Reino Unido", meaning: "Sospechoso, dudoso o poco confiable.", example: "Don't click that link, it looks a bit dodgy." },
+      "sorted": { region: "🇬🇧 Reino Unido", meaning: "Solucionado, arreglado o todo listo.", example: "Don't worry about the tickets, it's all sorted." },
+      "innit": { region: "🇬🇧 Reino Unido", meaning: "Contracción de 'isn't it?'. Usado para buscar confirmación.", example: "Cold today, innit?" },
+      "mate": { region: "🇬🇧 Reino Unido / 🇦🇺 Australia", meaning: "Amigo, compañero o colega.", example: "Thanks for the hand, mate!" },
+      "give me a shout": { region: "🇬🇧 Reino Unido", meaning: "Avísame o contáctame cuando estés disponible.", example: "Give me a shout when you are free." },
+      "get cracking": { region: "🇬🇧 Reino Unido", meaning: "Ponerse manos a la obra o empezar de inmediato.", example: "Let's get cracking on this report." },
+
+      // AU
+      "no worries": { region: "🇦🇺 Australia", meaning: "No hay problema, de nada, todo está bajo control.", example: "Thanks! - No worries, anytime." },
+      "reckon": { region: "🇦🇺 Australia", meaning: "Creer, opinar o suponer.", example: "What do you reckon about the new design?" },
+      "arvo": { region: "🇦🇺 Australia", meaning: "Tarde (Afternoon).", example: "Let's catch up this arvo." },
+      "heaps": { region: "🇦🇺 Australia", meaning: "Mucho / Montones.", example: "I have heaps of work today." },
+      "fair dinkum": { region: "🇦🇺 Australia", meaning: "Genuino, auténtico, ¿de verdad?", example: "Is that story fair dinkum?" },
+      "flat out": { region: "🇦🇺 Australia", meaning: "Extremadamente ocupado o a máxima velocidad.", example: "I've been flat out like a lizard all day." },
+      "give it a burl": { region: "🇦🇺 Australia", meaning: "Hacer el intento o darle una oportunidad.", example: "I haven't tried this software, but I'll give it a burl." },
+
+      // US Corporate
+      "circle back": { region: "🇺🇸 US Corporate", meaning: "Retomar o volver a discutir un tema más adelante.", example: "Let's circle back to this on Monday." },
+      "touch base": { region: "🇺🇸 US Corporate", meaning: "Hacer contacto rápido para ponerse al día.", example: "Just wanted to touch base regarding the budget." },
+      "bandwidth": { region: "🇺🇸 US Corporate", meaning: "Capacidad mental o tiempo disponible para asumir tareas.", example: "I don't have the bandwidth for another project." },
+      "move the needle": { region: "🇺🇸 US Corporate", meaning: "Generar un impacto o progreso significativo.", example: "We need an idea that actually moves the needle." },
+      "hard stop": { region: "🇺🇸 US Corporate", meaning: "Límite de tiempo estricto para terminar una reunión.", example: "I have a hard stop at 3 PM for another client call." },
+      "table this": { region: "🇺🇸 US Corporate", meaning: "Posponer o dejar un tema en pausa para después.", example: "Let's table this topic until we see the data." },
+      "low-hanging fruit": { region: "🇺🇸 US Corporate", meaning: "Oportunidades fáciles de lograr con poco esfuerzo.", example: "Fixing typos on the site is low-hanging fruit." }
+    };
+
+    // --- PERSONAJES & MISIONES ---
     const PERSONAS = {
       liam: {
         name: "Liam",
         flag: "🇬🇧",
-        badge: "Liam (UK Slang)",
         voiceLang: "en-GB",
         color: "#38bdf8",
         hair1: "#475569",
         hair2: "#1e293b",
-        systemPrompt: `You are Liam, a 28-year-old friendly tech colleague from London, UK.
-Goal: Chat naturally with the user practicing spoken English.
-Style: Use colloquial British slang naturally (such as: mate, proper, dodgy, chuffed, gutted, sorted, cheeky, innit).
-IMPORTANT: Keep answers very brief (1 to 2 sentences maximum) so the voice conversation remains rapid and engaging.
-If the user asks what a slang word means, explain it warmly with a quick example.`
+        defaultGreeting: "Oi mate! Fancy a pint or a chat? Let's get cracking with some proper British English!"
       },
       chloe: {
         name: "Chloe",
         flag: "🇦🇺",
-        badge: "Chloe (Aussie Slang)",
         voiceLang: "en-AU",
         color: "#fb923c",
         hair1: "#b45309",
         hair2: "#78350f",
-        systemPrompt: `You are Chloe, an upbeat marketing coordinator from Sydney, Australia.
-Goal: Casual daily banter and English practice.
-Style: Use everyday Australian slang naturally (such as: no worries, heaps, reckon, arvo, fair dinkum, flat out, give it a burl).
-IMPORTANT: Keep responses short (1 to 2 sentences) to keep the spoken exchange fast and lively.`
+        defaultGreeting: "G'day! Flat out today, but always keen to help you practice some Aussie lingo. What's the plan?"
       },
       marcus: {
         name: "Marcus",
         flag: "🇺🇸",
-        badge: "Marcus (US Business)",
         voiceLang: "en-US",
         color: "#10b981",
         hair1: "#1e293b",
         hair2: "#0f172a",
-        systemPrompt: `You are Marcus, a senior corporate strategist in New York.
-Goal: Practice corporate business English and executive communication.
-Style: Use American business idioms (touch base, circle back, bandwidth, move the needle, table this topic, low-hanging fruit).
-IMPORTANT: Keep answers crisp, sharp, and concise (1 to 2 sentences maximum).`
+        defaultGreeting: "Good morning. I've got 15 minutes before my hard stop. Let's touch base and optimize your English pitch."
       }
     };
 
-    let currentPersonaKey = 'liam';
+    const MISSIONS = {
+      free: {
+        title: "Modo: Charla Casual",
+        promptAddition: "Have a casual and engaging chat. Incorporate regional slang terms naturally."
+      },
+      pub: {
+        title: "Misión: Afterwork Pub Banter",
+        promptAddition: "ROLEPLAY SCENARIO: You are meeting at a London pub after work. Talk about weekend plans, sports, or office funny stories. Use British pub slang (proper, sorted, dodgy, mate, pint, gutting)."
+      },
+      standup: {
+        title: "Misión: Daily Standup Agile",
+        promptAddition: "ROLEPLAY SCENARIO: You are in an agile daily standup meeting. Ask the user what they did yesterday, what they will do today, and if they have any blockers. Use Australian colloquialisms (no worries, arvo, heaps, flat out)."
+      },
+      negotiation: {
+        title: "Misión: Negociación Ejecutiva",
+        promptAddition: "ROLEPLAY SCENARIO: You are an executive evaluating a software proposal from the user. Challenge their budget, ask for ROI, and negotiate firmly using American business idioms (bandwidth, move the needle, touch base, hard stop, circle back)."
+      }
+    };
+
+    let currentPersona = 'liam';
+    let currentMission = 'free';
+    let conversationHistory = [];
+    let detectedSlangs = new Set();
     let isRecording = false;
     let recognition = null;
     let synth = window.speechSynthesis;
-    let conversationHistory = [];
+    let currentSelectedSlang = null;
 
-    // --- INICIALIZACIÓN DE VOZ Y MICRÓFONO ---
+    // --- MANEJO DE MISIONES Y PERSONAJES ---
+    function changeMission() {
+      currentMission = document.getElementById('missionSelect').value;
+      const m = MISSIONS[currentMission];
+      document.getElementById('missionBadge').innerText = m.title;
+      conversationHistory = [];
+      const intro = `New Scenario Activated: ${m.title}. Hit the mic to start!`;
+      addMessage('ai', intro);
+      speakWithLipSync(intro);
+    }
+
+    function switchPersona(key, el) {
+      currentPersona = key;
+      const p = PERSONAS[key];
+
+      document.querySelectorAll('.persona-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+
+      document.getElementById('clothesEl').setAttribute('fill', p.color);
+      document.getElementById('hairStop1').setAttribute('stop-color', p.hair1);
+      document.getElementById('hairStop2').setAttribute('stop-color', p.hair2);
+
+      conversationHistory = [];
+      addMessage('ai', p.defaultGreeting);
+      speakWithLipSync(p.defaultGreeting);
+    }
+
+    // --- RECONOCIMIENTO DE VOZ ---
     function initSpeech() {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) {
-        alert("Tu navegador no soporta Speech Recognition nativo. Te recomendamos usar Google Chrome o Microsoft Edge.");
+        alert("Tu navegador no soporta reconocimiento de voz nativo. Usa Chrome o Edge.");
         return;
       }
 
       recognition = new SpeechRecognition();
       recognition.continuous = false;
       recognition.interimResults = false;
-      recognition.lang = PERSONAS[currentPersonaKey].voiceLang;
+      recognition.lang = PERSONAS[currentPersona].voiceLang;
 
       recognition.onstart = () => {
         isRecording = true;
         document.getElementById('micBtn').classList.add('recording');
-        document.getElementById('micLabel').innerText = "Escuchando en inglés...";
+        document.getElementById('micLabel').innerText = "Escuchando...";
         document.getElementById('waveIndicator').classList.add('active');
       };
 
@@ -504,17 +733,11 @@ IMPORTANT: Keep answers crisp, sharp, and concise (1 to 2 sentences maximum).`
         await queryLLM(transcript);
       };
 
-      recognition.onerror = (event) => {
-        console.error("Speech recognition error:", event.error);
-        stopRecordingState();
-      };
-
-      recognition.onend = () => {
-        stopRecordingState();
-      };
+      recognition.onerror = () => stopRecording();
+      recognition.onend = () => stopRecording();
     }
 
-    function stopRecordingState() {
+    function stopRecording() {
       isRecording = false;
       document.getElementById('micBtn').classList.remove('recording');
       document.getElementById('micLabel').innerText = "Clic para Hablar";
@@ -526,152 +749,265 @@ IMPORTANT: Keep answers crisp, sharp, and concise (1 to 2 sentences maximum).`
       if (isRecording) {
         recognition.stop();
       } else {
-        // Detener habla si el avatar estaba hablando
         if (synth.speaking) synth.cancel();
-        recognition.lang = PERSONAS[currentPersonaKey].voiceLang;
+        recognition.lang = PERSONAS[currentPersona].voiceLang;
         recognition.start();
       }
     }
 
-    // --- REPRODUCCIÓN DE VOZ + LIP SYNC ---
+    // --- HABLA & LIP-SYNC ---
     function speakWithLipSync(text) {
       if (!synth) return;
       synth.cancel();
 
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = PERSONAS[currentPersonaKey].voiceLang;
+      // Limpiar asteriscos o formato markdown para que el sintetizador no los lea
+      const cleanText = text.replace(/[*_#]/g, '');
 
-      // Buscar voz nativa con el acento correcto en el navegador
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.lang = PERSONAS[currentPersona].voiceLang;
+
       const voices = synth.getVoices();
-      const targetLang = PERSONAS[currentPersonaKey].voiceLang;
-      const matchedVoice = voices.find(v => v.lang.startsWith(targetLang) && !v.name.includes('Google')) ||
-                           voices.find(v => v.lang.startsWith(targetLang));
-
-      if (matchedVoice) utterance.voice = matchedVoice;
-      utterance.rate = 1.0;
+      const targetLang = PERSONAS[currentPersona].voiceLang;
+      const matched = voices.find(v => v.lang.startsWith(targetLang) && !v.name.includes('Google')) ||
+                      voices.find(v => v.lang.startsWith(targetLang));
+      if (matched) utterance.voice = matched;
 
       const avatarBox = document.getElementById('avatarBox');
-
-      utterance.onstart = () => {
-        avatarBox.classList.add('talking');
-      };
-
-      utterance.onend = () => {
-        avatarBox.classList.remove('talking');
-      };
-
-      utterance.onerror = () => {
-        avatarBox.classList.remove('talking');
-      };
+      utterance.onstart = () => avatarBox.classList.add('talking');
+      utterance.onend = () => avatarBox.classList.remove('talking');
+      utterance.onerror = () => avatarBox.classList.remove('talking');
 
       synth.speak(utterance);
     }
 
-    // --- CAMBIAR PERSONAJE ---
-    function switchPersona(key, el) {
-      currentPersonaKey = key;
-      const persona = PERSONAS[key];
+    // --- DETECCIÓN DE SLANGS & HIGHLIGHTING ---
+    function processSlangsInText(text) {
+      let markedText = text;
 
-      document.querySelectorAll('.persona-tab').forEach(tab => tab.classList.remove('active'));
-      el.classList.add('active');
-
-      document.getElementById('tutorBadge').innerText = persona.badge;
-      document.getElementById('clothesEl').setAttribute('fill', persona.color);
-      document.getElementById('hairStop1').setAttribute('stop-color', persona.hair1);
-      document.getElementById('hairStop2').setAttribute('stop-color', persona.hair2);
-
-      conversationHistory = [];
-      const introMsg = key === 'liam' 
-        ? "Oi mate! Let's get cracking with some proper British English. Give me a shout!"
-        : key === 'chloe'
-        ? "G'day! Ready to have a yarn and practice some Aussie lingo? Hit the mic!"
-        : "Hello! Let's optimize your business vocabulary today. What's on your agenda?";
-
-      addMessage('ai', introMsg);
-      speakWithLipSync(introMsg);
+      for (const [slang, data] of Object.entries(SLANG_DB)) {
+        const regex = new RegExp(`\\b${slang}\\b`, 'gi');
+        if (regex.test(text)) {
+          detectedSlangs.add(slang);
+          updateSlangSidebar();
+          markedText = markedText.replace(regex, (match) => {
+            return `<span class="slang-chip" onclick="openSlangModal('${slang}')">${match}</span>`;
+          });
+        }
+      }
+      return markedText;
     }
 
-    // --- LLM (GROQ O GEMINI - 100% GRATUITO) ---
-    async function queryLLM(userPrompt) {
+    function updateSlangSidebar() {
+      const container = document.getElementById('slangListContainer');
+      document.getElementById('slangCounter').innerText = `${detectedSlangs.size} detectados`;
+
+      if (detectedSlangs.size === 0) return;
+
+      container.innerHTML = '';
+      detectedSlangs.forEach(word => {
+        const data = SLANG_DB[word];
+        const card = document.createElement('div');
+        card.className = 'slang-card';
+        card.onclick = () => openSlangModal(word);
+        card.innerHTML = `
+          <div class="slang-card-title">
+            <span>${word}</span>
+            <span style="font-size:0.7rem; color:var(--text-muted);">${data.region.split(' ')[0]}</span>
+          </div>
+          <div class="slang-card-meaning">${data.meaning}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function openSlangModal(word) {
+      const data = SLANG_DB[word];
+      if (!data) return;
+      currentSelectedSlang = word;
+      document.getElementById('modalSlangWord').innerText = word.toUpperCase();
+      document.getElementById('modalSlangRegion').innerText = data.region;
+      document.getElementById('modalSlangDef').innerText = data.meaning;
+      document.getElementById('modalSlangExample').innerText = `"${data.example}"`;
+      document.getElementById('slangModal').classList.add('show');
+    }
+    function closeSlangModal() {
+      document.getElementById('slangModal').classList.remove('show');
+    }
+    function pronounceCurrentSlang() {
+      if (currentSelectedSlang) speakWithLipSync(currentSelectedSlang);
+    }
+
+    // --- CEREBRO IA (LLM) ---
+    async function queryLLM(userText) {
       const apiKey = localStorage.getItem('slangmate_api_key');
       const provider = localStorage.getItem('slangmate_provider') || 'groq';
 
       if (!apiKey) {
-        const fallback = "Please configure your free API key in the top right menu (⚙️) to activate my AI brain!";
-        addMessage('ai', fallback);
-        speakWithLipSync(fallback);
+        const warning = "Please configure your free API key in the top right menu (⚙️) to activate my AI voice!";
+        addMessage('ai', warning);
+        speakWithLipSync(warning);
         openConfigModal();
         return;
       }
 
-      conversationHistory.push({ role: 'user', content: userPrompt });
+      conversationHistory.push({ role: 'user', content: userText });
+
+      const p = PERSONAS[currentPersona];
+      const m = MISSIONS[currentMission];
+      const systemPrompt = `You are ${p.name}, a native speaker (${p.flag}).
+${m.promptAddition}
+RULES:
+1. Always keep responses brief (1-2 short sentences max) so this spoken conversation stays fast and natural.
+2. Frequently use natural slang words like: proper, dodgy, chuffed, gutted, sorted, mate, no worries, reckon, arvo, heaps, circle back, touch base, bandwidth, move the needle.
+3. If the user makes an obvious grammatical error, gently rephrase it naturally in your response without breaking character.`;
 
       try {
-        let aiText = "";
-
+        let aiResponse = "";
         if (provider === 'groq') {
           const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
-            headers: {
-              "Authorization": `Bearer ${apiKey}`,
-              "Content-Type": "application/json"
-            },
+            headers: { "Authorization": `Bearer ${apiKey}`, "Content-Type": "application/json" },
             body: JSON.stringify({
               model: "llama-3.3-70b-versatile",
-              messages: [
-                { role: "system", content: PERSONAS[currentPersonaKey].systemPrompt },
-                ...conversationHistory.slice(-6)
-              ],
+              messages: [{ role: "system", content: systemPrompt }, ...conversationHistory.slice(-6)],
               temperature: 0.7,
-              max_tokens: 100
+              max_tokens: 120
             })
           });
-          const data = await res.json();
-          aiText = data.choices[0].message.content;
+          const d = await res.json();
+          aiResponse = d.choices[0].message.content;
         } else {
-          // Gemini endpoint
           const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              contents: [{
-                parts: [{ text: `${PERSONAS[currentPersonaKey].systemPrompt}\nUser: ${userPrompt}\nAI:` }]
-              }]
+              contents: [{ parts: [{ text: `${systemPrompt}\nUser: ${userText}\nAI:` }] }]
             })
           });
-          const data = await res.json();
-          aiText = data.candidates[0].content.parts[0].text;
+          const d = await res.json();
+          aiResponse = d.candidates[0].content.parts[0].text;
         }
 
-        conversationHistory.push({ role: 'assistant', content: aiText });
-        addMessage('ai', aiText);
-        speakWithLipSync(aiText);
+        conversationHistory.push({ role: 'assistant', content: aiResponse });
+        addMessage('ai', aiResponse);
+        speakWithLipSync(aiResponse);
 
       } catch (err) {
         console.error(err);
-        const errMsg = "Sorry mate, I had trouble connecting. Check your API key in settings!";
-        addMessage('ai', errMsg);
-        speakWithLipSync(errMsg);
+        const errText = "Sorry mate, trouble connecting to my brain. Double-check your API key!";
+        addMessage('ai', errText);
+        speakWithLipSync(errText);
       }
     }
 
-    // --- UI CHAT ---
+    // --- REPORTE & EVALUACIÓN POST-SESIÓN ---
+    async function generateSessionFeedback() {
+      if (conversationHistory.length < 2) {
+        alert("Habla un poco más con el tutor antes de evaluar tu sesión (mínimo 2 intercambios).");
+        return;
+      }
+
+      document.getElementById('feedbackModal').classList.add('show');
+      document.getElementById('feedbackLoading').style.display = 'block';
+      document.getElementById('feedbackBody').style.display = 'none';
+
+      const apiKey = localStorage.getItem('slangmate_api_key');
+      const userLines = conversationHistory.filter(h => h.role === 'user').map(h => h.content).join(" | ");
+
+      const evaluationPrompt = `You are a professional ESL English Coach.
+Analyze the user's spoken sentences from this session: "${userLines}".
+Generate a structured JSON evaluation with EXACTLY this JSON format (no markdown code blocks, just raw JSON):
+{
+  "score": "8.5/10",
+  "fluency": "Good conversational flow with minor hesitation.",
+  "grammarCorrection": {
+    "original": "One phrase the user said that had a small mistake or sounded unnatural",
+    "improved": "How a native speaker would say it naturally"
+  },
+  "tip": "One actionable tip to improve spoken English in real life"
+}`;
+
+      try {
+        let rawResult = "";
+        if ((localStorage.getItem('slangmate_provider') || 'groq') === 'groq') {
+          const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: { "Authorization": `Bearer ${apiKey}`, "Content-Type": "application/json" },
+            body: JSON.stringify({
+              model: "llama-3.3-70b-versatile",
+              messages: [{ role: "user", content: evaluationPrompt }],
+              temperature: 0.2,
+              response_format: { type: "json_object" }
+            })
+          });
+          const d = await res.json();
+          rawResult = d.choices[0].message.content;
+        }
+
+        const data = JSON.parse(rawResult);
+        document.getElementById('feedbackLoading').style.display = 'none';
+        const body = document.getElementById('feedbackBody');
+        body.style.display = 'block';
+        body.innerHTML = `
+          <div style="text-align:center; margin-bottom:14px;">
+            <span class="report-badge" style="background:#10b981; color:#090d16; font-size:1.1rem; padding:6px 16px;">
+              Puntaje: ${data.score}
+            </span>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-top:6px;">${data.fluency}</p>
+          </div>
+
+          <div class="feedback-section">
+            <h3>Corrección Clave de Gramática / Expresión</h3>
+            <div class="feedback-diff">❌ "${data.grammarCorrection.original || "Ningún error grave detectado"}"</div>
+            <div class="feedback-better">✨ "${data.grammarCorrection.improved || "Tu expresión fue muy natural"}"</div>
+          </div>
+
+          <div class="feedback-section">
+            <h3>Consejo de Oro para tu Próxima Reunión</h3>
+            <p style="color:#e2e8f0;">💡 ${data.tip}</p>
+          </div>
+        `;
+
+        // Incrementar racha diaria
+        let streak = parseInt(localStorage.getItem('slangmate_streak') || '1');
+        localStorage.setItem('slangmate_streak', streak + 1);
+        document.getElementById('streakDays').innerText = streak + 1;
+
+      } catch (err) {
+        console.error(err);
+        document.getElementById('feedbackLoading').innerText = "No pudimos generar el reporte. Asegúrate de tener configurada tu API Key.";
+      }
+    }
+
+    function closeFeedbackModal() {
+      document.getElementById('feedbackModal').classList.remove('show');
+    }
+
+    // --- CHAT UI ---
     function addMessage(role, text) {
       const chat = document.getElementById('chatList');
       const div = document.createElement('div');
       div.className = `msg ${role}`;
-      
+
       const sender = document.createElement('div');
       sender.className = 'msg-sender';
-      sender.innerText = role === 'user' ? 'Tú' : PERSONAS[currentPersonaKey].name;
+      sender.innerText = role === 'user' ? 'Tú' : `${PERSONAS[currentPersona].name} (${PERSONAS[currentPersona].flag})`;
 
       div.appendChild(sender);
-      div.appendChild(document.createTextNode(text));
+
+      if (role === 'ai') {
+        const span = document.createElement('span');
+        span.innerHTML = processSlangsInText(text);
+        div.appendChild(span);
+      } else {
+        div.appendChild(document.createTextNode(text));
+      }
+
       chat.appendChild(div);
       chat.scrollTop = chat.scrollHeight;
     }
 
-    // --- MODAL CONFIG ---
+    // --- CONFIG MODAL ---
     function openConfigModal() {
       document.getElementById('configModal').classList.add('show');
       document.getElementById('apiKeyInput').value = localStorage.getItem('slangmate_api_key') || '';
@@ -681,18 +1017,16 @@ IMPORTANT: Keep answers crisp, sharp, and concise (1 to 2 sentences maximum).`
       document.getElementById('configModal').classList.remove('show');
     }
     function saveApiKey() {
-      const key = document.getElementById('apiKeyInput').value.trim();
-      const prov = document.getElementById('apiProvider').value;
-      localStorage.setItem('slangmate_api_key', key);
-      localStorage.setItem('slangmate_provider', prov);
+      const k = document.getElementById('apiKeyInput').value.trim();
+      const p = document.getElementById('apiProvider').value;
+      localStorage.setItem('slangmate_api_key', k);
+      localStorage.setItem('slangmate_provider', p);
       closeConfigModal();
-      alert("¡Configuración guardada correctamente!");
+      alert("¡Clave guardada con éxito!");
     }
 
-    // Precargar voces
-    if (speechSynthesis.onvoiceschanged !== undefined) {
-      speechSynthesis.onvoiceschanged = () => synth.getVoices();
-    }
+    // Cargar racha inicial guardada
+    document.getElementById('streakDays').innerText = localStorage.getItem('slangmate_streak') || '1';
   </script>
 </body>
 </html>
