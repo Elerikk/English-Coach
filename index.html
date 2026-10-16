@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SlangMate AI - Tu Tutor Nativo de Inglés</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.35);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: rgba(148, 163, 184, 0.15);
+      --success: #10b981;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body {
+      background: radial-gradient(circle at 50% 20%, #1e293b 0%, #0f172a 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px;
+    }
+
+    header {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand h1 { font-size: 1.35rem; font-weight: 700; }
+    .brand span { color: var(--accent); }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-icon {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+    .btn-icon:hover { border-color: var(--accent); background: #1e293b; }
+
+    .main-grid {
+      width: 100%;
+      max-width: 900px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+      flex: 1;
+    }
+
+    @media (max-width: 768px) {
+      .main-grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Avatar Area */
+    .avatar-wrapper {
+      position: relative;
+      width: 100%;
+      height: 320px;
+      background: linear-gradient(180deg, #1e293b 0%, #0b1120 100%);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .avatar-svg {
+      width: 220px;
+      height: 220px;
+      transition: transform 0.2s ease;
+    }
+
+    /* Lip-sync and animation styles */
+    .eye { transition: transform 0.1s ease; transform-origin: center; }
+    .mouth {
+      transition: all 0.08s ease;
+      transform-origin: 100px 145px;
+    }
+
+    .talking .mouth {
+      animation: talkCycle 0.22s infinite alternate ease-in-out;
+    }
+
+    @keyframes talkCycle {
+      0% { transform: scaleY(0.4) scaleX(1); }
+      50% { transform: scaleY(1.6) scaleX(1.15); }
+      100% { transform: scaleY(0.9) scaleX(0.85); }
+    }
+
+    .listening-wave {
+      position: absolute;
+      bottom: 12px;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      height: 24px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .listening-wave.active { opacity: 1; }
+    .wave-bar {
+      width: 4px;
+      background: var(--accent);
+      border-radius: 2px;
+      animation: wave 0.8s infinite ease-in-out;
+    }
+    .wave-bar:nth-child(2) { animation-delay: 0.15s; }
+    .wave-bar:nth-child(3) { animation-delay: 0.3s; }
+    .wave-bar:nth-child(4) { animation-delay: 0.45s; }
+
+    @keyframes wave {
+      0%, 100% { height: 6px; }
+      50% { height: 22px; }
+    }
+
+    /* Personas Tabs */
+    .personas {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .persona-tab {
+      background: #1e293b;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 8px;
+      text-align: center;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      transition: all 0.2s ease;
+    }
+    .persona-tab strong { display: block; color: var(--text); font-size: 0.9rem; }
+    .persona-tab.active {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--text);
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: auto;
+    }
+
+    .mic-button {
+      background: var(--accent);
+      color: #0b1120;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 0 20px var(--accent-glow);
+      transition: all 0.2s ease;
+    }
+    .mic-button:hover { filter: brightness(1.1); transform: scale(1.01); }
+    .mic-button.recording {
+      background: #ef4444;
+      color: #fff;
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
+      70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+
+    /* Dialogue & History */
+    .chat-container {
+      height: 380px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-right: 6px;
+    }
+    .chat-container::-webkit-scrollbar { width: 5px; }
+    .chat-container::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+
+    .msg {
+      padding: 12px 14px;
+      border-radius: 14px;
+      max-width: 85%;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+    .msg.user {
+      align-self: flex-end;
+      background: #2563eb;
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+    .msg.ai {
+      align-self: flex-start;
+      background: #1e293b;
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 4px;
+    }
+    .msg-sender {
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .slang-highlight {
+      color: #38bdf8;
+      font-weight: 600;
+      text-decoration: underline dotted;
+      cursor: pointer;
+    }
+
+    /* Modal Config */
+    .modal {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
+    .modal.show { display: flex; }
+    .modal-content {
+      background: #1e293b;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      width: 100%;
+      max-width: 480px;
+    }
+    .modal-content h2 { margin-bottom: 12px; font-size: 1.2rem; }
+    .modal-content p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px; line-height: 1.4; }
+    .modal-content input, .modal-content select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      color: white;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+    }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 10px; }
+    .btn-secondary { background: #334155; border: none; color: white; padding: 8px 16px; border-radius: 10px; cursor: pointer; }
+    .btn-primary { background: var(--accent); border: none; color: #0f172a; font-weight: 700; padding: 8px 16px; border-radius: 10px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+      <h1>SlangMate <span>AI</span></h1>
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" onclick="openConfigModal()">
+        ⚙️ Configurar API (Gratis)
+      </button>
+    </div>
+  </header>
+
+  <div class="main-grid">
+    <!-- Panel Izquierdo: Avatar y Controles -->
+    <div class="card">
+      <div class="personas">
+        <div class="persona-tab active" onclick="switchPersona('liam', this)">
+          <strong>🇬🇧 Liam</strong>
+          <span>London Slang</span>
+        </div>
+        <div class="persona-tab" onclick="switchPersona('chloe', this)">
+          <strong>🇦🇺 Chloe</strong>
+          <span>Aussie Slang</span>
+        </div>
+        <div class="persona-tab" onclick="switchPersona('marcus', this)">
+          <strong>🇺🇸 Marcus</strong>
+          <span>US Corporate</span>
+        </div>
+      </div>
+
+      <div class="avatar-wrapper" id="avatarBox">
+        <svg class="avatar-svg" id="avatarSvg" viewBox="0 0 200 200">
+          <defs>
+            <radialGradient id="skinGrad" cx="50%" cy="40%" r="50%">
+              <stop offset="0%" stop-color="#fed7aa"/>
+              <stop offset="100%" stop-color="#fbd38d"/>
+            </radialGradient>
+            <linearGradient id="hairGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#334155" id="hairStop1"/>
+              <stop offset="100%" stop-color="#1e293b" id="hairStop2"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Ropa / Cuello -->
+          <path d="M60 190 Q100 170 140 190 L160 200 L40 200 Z" fill="#38bdf8" id="clothesEl"/>
+          
+          <!-- Cabeza -->
+          <ellipse cx="100" cy="115" rx="46" ry="54" fill="url(#skinGrad)" />
+
+          <!-- Pelo -->
+          <path d="M52 110 C50 65 150 65 148 110 C140 70 60 70 52 110 Z" fill="url(#hairGrad)"/>
+
+          <!-- Ojos -->
+          <ellipse class="eye" cx="84" cy="110" rx="4" ry="5" fill="#1e293b" />
+          <ellipse class="eye" cx="116" cy="110" rx="4" ry="5" fill="#1e293b" />
+
+          <!-- Nariz -->
+          <path d="M98 118 Q100 126 104 126" stroke="#d97706" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+          <!-- Boca interactiva (Lip Sync) -->
+          <path id="avatarMouth" class="mouth" d="M88 144 Q100 148 112 144" stroke="#b91c1c" stroke-width="3" fill="#991b1b" stroke-linecap="round"/>
+        </svg>
+
+        <div class="listening-wave" id="waveIndicator">
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="mic-button" id="micBtn" onclick="toggleSpeech()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+          <span id="micLabel">Mantener o Clic para Hablar</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Panel Derecho: Conversación y Aprendizaje -->
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h2 style="font-size:1.05rem; font-weight:600;">Conversación en Tiempo Real</h2>
+        <span id="tutorBadge" style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); padding:3px 10px; border-radius:99px; font-weight:600;">
+          Liam (UK)
+        </span>
+      </div>
+
+      <div class="chat-container" id="chatList">
+        <div class="msg ai">
+          <div class="msg-sender" id="initialSender">Liam</div>
+          Oi mate! Ready to practice some proper English? Hit the mic button below and say whatever is on your mind!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Configuración API Gratuita -->
+  <div class="modal" id="configModal">
+    <div class="modal-content">
+      <h2>Configuración de Conexión</h2>
+      <p>
+        Para que la IA funcione 100% gratis para siempre con latencia instantánea, recomendamos una clave de <strong>Groq Cloud</strong> (modelo Llama 3) o <strong>Google Gemini</strong>. Ambas son gratuitas y se obtienen en 1 minuto.
+      </p>
+
+      <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-bottom:4px;">Proveedor de IA:</label>
+      <select id="apiProvider" onchange="onProviderChange()">
+        <option value="groq">Groq Cloud (Llama 3.3 - Ultra rápido, Recomendado)</option>
+        <option value="gemini">Google Gemini Flash (Gratis en AI Studio)</option>
+      </select>
+
+      <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-bottom:4px;">Tu API Key Gratuita:</label>
+      <input type="password" id="apiKeyInput" placeholder="gsk_... o AIza..." />
+
+      <p style="font-size:0.75rem; color:#64748b;">
+        * Tu clave se guarda exclusivamente en el almacenamiento local de tu navegador (localStorage). Nadie más tiene acceso a ella.
+      </p>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeConfigModal()">Cerrar</button>
+        <button class="btn-primary" onclick="saveApiKey()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- ESTADO & PERSONAJES ---
+    const PERSONAS = {
+      liam: {
+        name: "Liam",
+        flag: "🇬🇧",
+        badge: "Liam (UK Slang)",
+        voiceLang: "en-GB",
+        color: "#38bdf8",
+        hair1: "#475569",
+        hair2: "#1e293b",
+        systemPrompt: `You are Liam, a 28-year-old friendly tech colleague from London, UK.
+Goal: Chat naturally with the user practicing spoken English.
+Style: Use colloquial British slang naturally (such as: mate, proper, dodgy, chuffed, gutted, sorted, cheeky, innit).
+IMPORTANT: Keep answers very brief (1 to 2 sentences maximum) so the voice conversation remains rapid and engaging.
+If the user asks what a slang word means, explain it warmly with a quick example.`
+      },
+      chloe: {
+        name: "Chloe",
+        flag: "🇦🇺",
+        badge: "Chloe (Aussie Slang)",
+        voiceLang: "en-AU",
+        color: "#fb923c",
+        hair1: "#b45309",
+        hair2: "#78350f",
+        systemPrompt: `You are Chloe, an upbeat marketing coordinator from Sydney, Australia.
+Goal: Casual daily banter and English practice.
+Style: Use everyday Australian slang naturally (such as: no worries, heaps, reckon, arvo, fair dinkum, flat out, give it a burl).
+IMPORTANT: Keep responses short (1 to 2 sentences) to keep the spoken exchange fast and lively.`
+      },
+      marcus: {
+        name: "Marcus",
+        flag: "🇺🇸",
+        badge: "Marcus (US Business)",
+        voiceLang: "en-US",
+        color: "#10b981",
+        hair1: "#1e293b",
+        hair2: "#0f172a",
+        systemPrompt: `You are Marcus, a senior corporate strategist in New York.
+Goal: Practice corporate business English and executive communication.
+Style: Use American business idioms (touch base, circle back, bandwidth, move the needle, table this topic, low-hanging fruit).
+IMPORTANT: Keep answers crisp, sharp, and concise (1 to 2 sentences maximum).`
+      }
+    };
+
+    let currentPersonaKey = 'liam';
+    let isRecording = false;
+    let recognition = null;
+    let synth = window.speechSynthesis;
+    let conversationHistory = [];
+
+    // --- INICIALIZACIÓN DE VOZ Y MICRÓFONO ---
+    function initSpeech() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert("Tu navegador no soporta Speech Recognition nativo. Te recomendamos usar Google Chrome o Microsoft Edge.");
+        return;
+      }
+
+      recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = PERSONAS[currentPersonaKey].voiceLang;
+
+      recognition.onstart = () => {
+        isRecording = true;
+        document.getElementById('micBtn').classList.add('recording');
+        document.getElementById('micLabel').innerText = "Escuchando en inglés...";
+        document.getElementById('waveIndicator').classList.add('active');
+      };
+
+      recognition.onresult = async (event) => {
+        const transcript = event.results[0][0].transcript;
+        addMessage('user', transcript);
+        await queryLLM(transcript);
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+        stopRecordingState();
+      };
+
+      recognition.onend = () => {
+        stopRecordingState();
+      };
+    }
+
+    function stopRecordingState() {
+      isRecording = false;
+      document.getElementById('micBtn').classList.remove('recording');
+      document.getElementById('micLabel').innerText = "Clic para Hablar";
+      document.getElementById('waveIndicator').classList.remove('active');
+    }
+
+    function toggleSpeech() {
+      if (!recognition) initSpeech();
+      if (isRecording) {
+        recognition.stop();
+      } else {
+        // Detener habla si el avatar estaba hablando
+        if (synth.speaking) synth.cancel();
+        recognition.lang = PERSONAS[currentPersonaKey].voiceLang;
+        recognition.start();
+      }
+    }
+
+    // --- REPRODUCCIÓN DE VOZ + LIP SYNC ---
+    function speakWithLipSync(text) {
+      if (!synth) return;
+      synth.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = PERSONAS[currentPersonaKey].voiceLang;
+
+      // Buscar voz nativa con el acento correcto en el navegador
+      const voices = synth.getVoices();
+      const targetLang = PERSONAS[currentPersonaKey].voiceLang;
+      const matchedVoice = voices.find(v => v.lang.startsWith(targetLang) && !v.name.includes('Google')) ||
+                           voices.find(v => v.lang.startsWith(targetLang));
+
+      if (matchedVoice) utterance.voice = matchedVoice;
+      utterance.rate = 1.0;
+
+      const avatarBox = document.getElementById('avatarBox');
+
+      utterance.onstart = () => {
+        avatarBox.classList.add('talking');
+      };
+
+      utterance.onend = () => {
+        avatarBox.classList.remove('talking');
+      };
+
+      utterance.onerror = () => {
+        avatarBox.classList.remove('talking');
+      };
+
+      synth.speak(utterance);
+    }
+
+    // --- CAMBIAR PERSONAJE ---
+    function switchPersona(key, el) {
+      currentPersonaKey = key;
+      const persona = PERSONAS[key];
+
+      document.querySelectorAll('.persona-tab').forEach(tab => tab.classList.remove('active'));
+      el.classList.add('active');
+
+      document.getElementById('tutorBadge').innerText = persona.badge;
+      document.getElementById('clothesEl').setAttribute('fill', persona.color);
+      document.getElementById('hairStop1').setAttribute('stop-color', persona.hair1);
+      document.getElementById('hairStop2').setAttribute('stop-color', persona.hair2);
+
+      conversationHistory = [];
+      const introMsg = key === 'liam' 
+        ? "Oi mate! Let's get cracking with some proper British English. Give me a shout!"
+        : key === 'chloe'
+        ? "G'day! Ready to have a yarn and practice some Aussie lingo? Hit the mic!"
+        : "Hello! Let's optimize your business vocabulary today. What's on your agenda?";
+
+      addMessage('ai', introMsg);
+      speakWithLipSync(introMsg);
+    }
+
+    // --- LLM (GROQ O GEMINI - 100% GRATUITO) ---
+    async function queryLLM(userPrompt) {
+      const apiKey = localStorage.getItem('slangmate_api_key');
+      const provider = localStorage.getItem('slangmate_provider') || 'groq';
+
+      if (!apiKey) {
+        const fallback = "Please configure your free API key in the top right menu (⚙️) to activate my AI brain!";
+        addMessage('ai', fallback);
+        speakWithLipSync(fallback);
+        openConfigModal();
+        return;
+      }
+
+      conversationHistory.push({ role: 'user', content: userPrompt });
+
+      try {
+        let aiText = "";
+
+        if (provider === 'groq') {
+          const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${apiKey}`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              model: "llama-3.3-70b-versatile",
+              messages: [
+                { role: "system", content: PERSONAS[currentPersonaKey].systemPrompt },
+                ...conversationHistory.slice(-6)
+              ],
+              temperature: 0.7,
+              max_tokens: 100
+            })
+          });
+          const data = await res.json();
+          aiText = data.choices[0].message.content;
+        } else {
+          // Gemini endpoint
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [{
+                parts: [{ text: `${PERSONAS[currentPersonaKey].systemPrompt}\nUser: ${userPrompt}\nAI:` }]
+              }]
+            })
+          });
+          const data = await res.json();
+          aiText = data.candidates[0].content.parts[0].text;
+        }
+
+        conversationHistory.push({ role: 'assistant', content: aiText });
+        addMessage('ai', aiText);
+        speakWithLipSync(aiText);
+
+      } catch (err) {
+        console.error(err);
+        const errMsg = "Sorry mate, I had trouble connecting. Check your API key in settings!";
+        addMessage('ai', errMsg);
+        speakWithLipSync(errMsg);
+      }
+    }
+
+    // --- UI CHAT ---
+    function addMessage(role, text) {
+      const chat = document.getElementById('chatList');
+      const div = document.createElement('div');
+      div.className = `msg ${role}`;
+      
+      const sender = document.createElement('div');
+      sender.className = 'msg-sender';
+      sender.innerText = role === 'user' ? 'Tú' : PERSONAS[currentPersonaKey].name;
+
+      div.appendChild(sender);
+      div.appendChild(document.createTextNode(text));
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    // --- MODAL CONFIG ---
+    function openConfigModal() {
+      document.getElementById('configModal').classList.add('show');
+      document.getElementById('apiKeyInput').value = localStorage.getItem('slangmate_api_key') || '';
+      document.getElementById('apiProvider').value = localStorage.getItem('slangmate_provider') || 'groq';
+    }
+    function closeConfigModal() {
+      document.getElementById('configModal').classList.remove('show');
+    }
+    function saveApiKey() {
+      const key = document.getElementById('apiKeyInput').value.trim();
+      const prov = document.getElementById('apiProvider').value;
+      localStorage.setItem('slangmate_api_key', key);
+      localStorage.setItem('slangmate_provider', prov);
+      closeConfigModal();
+      alert("¡Configuración guardada correctamente!");
+    }
+
+    // Precargar voces
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = () => synth.getVoices();
+    }
+  </script>
+</body>
+</html>
